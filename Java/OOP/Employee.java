@@ -104,7 +104,9 @@ public class Employee {
 /**
  * INHERITANCE 
  *      - extends to inherit a class
+ *          - can only "extends" one class
  *      - implements to inherit from interfaces (ABSTRACTION)
+ *          - can "implements" multiple interfaces
  * 
  *      - gets all of the properties and methods from the parent class
  *          - can only access public and protected members from the parent (maybe default members as well if in the same package)
@@ -127,7 +129,7 @@ class ITEmployee extends Employee {
     }
 
     /**
-     * METHOD OVERRIDDING
+     * METHOD OVERRIDDING - POLYMORPHISM
      *      - changing the implementation of a method from the parent class in the child class
      *      - @Override isn't necessary but is best practice to include
      * 
@@ -140,7 +142,7 @@ class ITEmployee extends Employee {
     }
 
     /**
-     * METHOD OVERLOADING
+     * METHOD OVERLOADING - POLYMORPHISM
      *      - having a method with the same name in the same class, but with a different signature
      * 
      */
