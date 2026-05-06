@@ -28,11 +28,6 @@
  * 
  * 
  */
-
-
-
-
-
 public class ExceptionBasics {
     public static void main(String[] srgs) {
 
@@ -129,6 +124,24 @@ public class ExceptionBasics {
             System.out.println("StackOverflowError: Tried to do infinite (or VERY large) recursion\n" + e.getMessage());
         }
 
+        // ----- CUSTOM EXCPETION -----
+        try{
+            Car car = new Car(1);   // car doesn't have enough wheels
+            car.start();            
+        }
+        catch (InvalidVehicleException e) {
+            System.out.println("InvalidVehicleException: " + e.getMessage());
+        }
+
+        // ----- DEALING WITH EXCEPTION PROPAGATION -----
+        try{
+            // must handle the exception here or risk the application shutting down     
+            methodA();         
+        }
+        catch (InvalidVehicleException e) {
+            System.out.println("InvalidVehicleException: " + e.getMessage());
+        }
+
     }
 
 
@@ -154,13 +167,35 @@ public class ExceptionBasics {
     static void recurse(int depth) {
         recurse(depth + 1);
     }
+
+
+    // EXCEPTION PROPAGATION - exceptions are propagated up a chain of methods until they are handled, or reach your app context
+    static void methodA() throws InvalidVehicleException {
+        methodB(); 
+    }
+    static void methodB() throws InvalidVehicleException { 
+        methodC(); 
+    }
+    static void methodC() throws InvalidVehicleException { 
+        throw new InvalidVehicleException("Not a vehicle."); 
+    }
 }
 
 class Car {
     private boolean hasFuel;
+    private int numWheels;
 
     public Car() {
         hasFuel = false;
+    }
+
+    public Car(int numWheels) throws InvalidVehicleException {
+        hasFuel = false;
+
+        if(numWheels < 2) {
+            throw new InvalidVehicleException("Every car must have at least 2 wheels.");
+        }
+        this.numWheels = numWheels;
     }
 
     public void fuelUp() {
@@ -173,6 +208,8 @@ class Car {
             // thorw this when an object's current state doesn't meet the requirements to perform an action
             throw new IllegalStateException("Car must be fueled up before it can start.");
         }
+
+        System.out.println("The car with " + numWheels + " wheels has started.");
     }
 }
 
