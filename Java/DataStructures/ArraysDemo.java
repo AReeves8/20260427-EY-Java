@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.Comparator;
+
 public class ArraysDemo {
 
     public static void main(String[] args) {
@@ -120,7 +123,7 @@ public class ArraysDemo {
         int[][][] jaggedArray3D = new int[3][4][]; 
 
         // need to initialize inner arrays before you access them
-        jaggedArray3D[1][0][0] = 5;     // NullPointerException
+        //jaggedArray3D[1][0][0] = 5;     // NullPointerException
 
 
 
@@ -134,5 +137,65 @@ public class ArraysDemo {
          * [ ref -> ( [ ref -> ( [] ) ] ) ]
          * 
          */
+
+
+
+        // ----- SORTING AND ORDERING ARRAYS -----
+
+        Student alice = new Student("Alice", 3.2);
+        Student bob = new Student("Bob", 2.9);
+        Student charlie = new Student("Charlie", 3.8);
+        Student daisy = new Student("Daisy", 4.0);
+        Student ethan = new Student("Ethan", 1.4);
+        Student ethan2 = new Student("Ethan", 3.4);
+        Student[] students = {alice, bob, charlie, daisy, ethan, ethan2};
+
+
+        // COMPARABLE
+        System.out.println("BEFORE SORTING:\n" + Arrays.toString(students));
+
+        // since the class implements compareTo(), that method will implicitly be used for sorting.
+        Arrays.sort(students);      // ClassCastException if class doesn't implement Comparable      
+        System.out.println("AFTER SORTING:\n" + Arrays.toString(students));
+
+
+
+        // COMPARATOR - standalone sorting functions
+        Comparator<Student> byNameAsc = new Comparator<Student>() {         // Anonymous Inner Class
+            @Override
+            public int compare(Student student1, Student student2) {
+                return student1.getName().compareTo(student2.getName());    // using string's copareTo method to help us sort
+            }
+        };
+
+        // using custom Comparator instead of the natural ordering of Comparable
+        Arrays.sort(students, byNameAsc);     
+        System.out.println("AFTER NAME SORTING:\n" + Arrays.toString(students));  
+
+       
+        /**
+         * ANONYMOUS INNER CLASSES
+         *      - an interface only has one method, and you can implement it directly as part of your code
+         *      - an inner class that has no name and does nothing except implement the single method from the interface
+         *          - everything between the curly braces above is the anonymous inner class
+         * 
+         *      - can use LAMBDAS to implement these in shorthand
+         *          - (params) -> { return someValue }
+         */
+        Comparator<Student> byNameDesc = (Student student1, Student student2) -> { 
+            return student2.getName().compareTo(student1.getName()); 
+        };
+
+
+        // Comparator.comparing()   - factory method that lets you simplify the comparison process using Streams
+        Comparator<Student> byNameThenGpa = Comparator
+            .comparing(Student::getName)            // first sorts by name
+            .thenComparingDouble(Student::getGpa);  // then sorts by GPA
+
+         
+        Arrays.sort(students, byNameThenGpa);
+        System.out.println("AFTER NAME THEN GPA SORTING:\n" + Arrays.toString(students)); 
+        
+
     }
 }
