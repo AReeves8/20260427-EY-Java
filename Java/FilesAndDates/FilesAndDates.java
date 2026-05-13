@@ -1,8 +1,15 @@
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -32,7 +39,7 @@ public class FilesAndDates {
          */
         tryWithoutResourcesExample();
         tryWithResourcesExample();
-        
+        createScheduleReport();
 
         
 
@@ -170,10 +177,59 @@ public class FilesAndDates {
                 entries.add(new ScheduleEntry(className, date, startTime, endTime));
 
             }
+        } 
 
-        } catch(Exception exception) {
 
+        // ----- CREATING REPORT -----
+        
+        /**
+         * docs for DateTimeFormatter and what symbols.characters to use: 
+         * https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
+         */
+        DateTimeFormatter displayDate = DateTimeFormatter.ofPattern("EEE, MMM d yyyy");
+        DateTimeFormatter displayTime = DateTimeFormatter.ofPattern("h:mm a");
+        DateTimeFormatter displayDateTime = DateTimeFormatter.ofPattern("EEE, MMM d yyyy 'at' h:mm a");
+        LocalDate today = LocalDate.now();      // today's date
+
+
+        try(PrintWriter output = new PrintWriter(new FileOutputStream(REPORT_FILE))) {
+
+            output.println("=".repeat(85));
+            output.println("=".repeat(30) + " TRAINING CLASS SCHEDULE " + "=".repeat(30));
+            output.println("=".repeat(85));
+            output.println("Report Generated: " + LocalDateTime.now().format(displayDateTime));
+            output.println();
+            output.printf("%-26s %-20s %-12s %-12s %s%n", "Session", "Date", "Start Time", "Duration", "Days Away");
+            output.println("-".repeat(85));
+
+
+            Duration totalTime = Duration.ZERO;
+
+            for(ScheduleEntry entry : entries) {
+                Duration sessionLength = entry.getDuration();
+                totalTime = totalTime.plus(sessionLength);
+
+                long daysAway = ChronoUnit.DAYS.between(today, entry.getDate());
+
+                output.printf("%-26s %-20s %-12s %-12s %s%n", 
+                    entry.getName(), 
+                    entry.getDate().format(displayDate), 
+                    entry.getStartTime().format(displayTime),
+                    sessionLength.toHours(), 
+                    daysAway
+                );
+
+                output.println("-".repeat(85));
+            }
+
+            output.println("Total Training Time: " + totalTime.toHours());
+
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not find report file: " + REPORT_FILE);
+            e.printStackTrace();
         }
+
 
     }
 }
