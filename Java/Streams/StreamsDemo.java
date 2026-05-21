@@ -1,7 +1,17 @@
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.DoubleSummaryStatistics;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.function.BiFunction;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class StreamsDemo {
@@ -9,15 +19,19 @@ public class StreamsDemo {
     static final List<Product> PRODUCTS = List.of(
         new Product("Laptop Pro",        "Electronics", 1299.99,  5),
         new Product("Wireless Mouse",    "Electronics",   29.99, 42),
-        new Product("USB-C Hub",         "Electronics",   49.99,  0),   // out of stock
+        new Product("USB-C Hub",         "Electronics",   49.99,  0),       // out of stock
         new Product("Clean Code",        "Books",          35.00, 18),
         new Product("Effective Java",    "Books",          45.00, 12),
         new Product("OCP Study Guide",   "Books",          55.00,  7),
         new Product("Chef Knife",        "Kitchen",        89.99,  3),
-        new Product("Cast Iron Pan",     "Kitchen",        39.99,  0),   // out of stock
+        new Product("Cast Iron Pan",     "Kitchen",        39.99,  0),      // out of stock
         new Product("Cutting Board",     "Kitchen",        22.50, 15),
         new Product("Running Jacket",    "Clothing",       75.00,  9),
-        new Product("Cotton T-Shirt",    "Clothing",       18.99, 30)
+        new Product("Cotton T-Shirt",    "Clothing",       18.99, 30),
+        new Product("Cast Iron Pan",     "Kitchen",        39.99,  0),      // dupe
+        new Product("Cutting Board",     "Kitchen",        22.50, 15),      // dupe
+        new Product("Cutting Board",     "Kitchen",       122.50, 15),      // dupe but different price
+        new Product("Running Jacket",    "Clothing",       75.00,  9)       // dupe
     );
 
     public static void main(String[] args) {
@@ -29,7 +43,9 @@ public class StreamsDemo {
          *          - go through each element in sequence to aggregate that data
          */
         //creatingStreams();
-        streamFunctions();
+        //streamFunctions();
+        //collectingStreams();
+        parallelStreams();
         
 
 
@@ -224,4 +240,167 @@ public class StreamsDemo {
     }
 
 
+    static void collectingStreams() {
+
+        /**
+         * COLLECTORS
+         *      - help turn streams into collections
+         * 
+         *      - toList()
+         *      - toUnmodifiableList()
+         *      - toSet()
+         *      - toMap()
+         * 
+         *      - groupingby()      
+         *      - joining()
+         *      - summarizingDouble()
+         */
+
+        // toSet - no dupes and insertion order not retained
+        System.out.println("--- TO SET ---");
+        Set<Product> uniqueProducts = PRODUCTS.stream().collect(Collectors.toSet());
+        System.out.println(uniqueProducts);
+
+        // toMap - throws IllegalStateException if duplicate keys are found
+        // Map<String, Double> nameToPriceMap = PRODUCTS.stream()
+        //     .collect(Collectors.toMap(Product::name, Product::price));
+        //System.out.println(nameToPriceMap);
+
+        // toMap with merge function - tells the Collector how to merge duplicate keys
+        System.out.println("--- TO MAP ---");
+        Map<String, Double> nameToPriceMap = PRODUCTS.stream()
+            .collect(Collectors.toMap(Product::name, Product::price, Double::max));
+        System.out.println(nameToPriceMap);
+
+        // groupingBy - creates a map that has products sorted by some grouping
+        System.out.println("--- GROUPING BY ---");
+        Map<String, List<Product>> productCategories = PRODUCTS.stream()
+            .collect(Collectors.groupingBy(Product::category));
+        System.out.println(productCategories);
+
+        // can add a DOWN STREAM COLLECTOR to consolidate the list
+        Map<String, Long> productCategoriesCount = PRODUCTS.stream()
+            .collect(Collectors.groupingBy(Product::category, Collectors.counting()));
+        System.out.println(productCategoriesCount);
+
+        Map<String, Double> productCategoriesAvgPrice = PRODUCTS.stream()
+            .collect(Collectors.groupingBy(Product::category, Collectors.averagingDouble(Product::price)));
+        System.out.println(productCategoriesAvgPrice);
+
+        // can do nested groupings to consolidate data based on multiple factors
+        Map<String, Map<String, Long>> productCategoriesStockCount = PRODUCTS.stream()
+            .collect(Collectors.groupingBy(
+                Product::category, 
+                Collectors.groupingBy(
+                    product -> product.stock() > 0 ? "In Stock" : "Out of Stock", 
+                    Collectors.counting()
+                )));
+        System.out.println(productCategoriesStockCount);
+
+        // joining - joins your collection into a single String
+        System.out.println("--- JOINING ---");
+        String productNamesPrexifSuffix = PRODUCTS.stream()
+            .map(Product::name)
+            // prefix and suffix go at the beginning and end of the entire string
+            .collect(Collectors.joining(",", "\t", "\n"));  
+        System.out.println(productNamesPrexifSuffix);
+
+        String productNames = PRODUCTS.stream()
+            .map(Product::name)
+            // prefix and suffix go at the beginning and end of the entire string
+            .collect(Collectors.joining(", "));
+        System.out.println(productNames);
+
+
+        System.out.println("--- SUMMARIZING DOUBLE ---");
+        DoubleSummaryStatistics priceStats = PRODUCTS.stream()
+            .collect(Collectors.summarizingDouble(Product::price));
+
+        System.out.println("Count: " + priceStats.getCount());
+        System.out.println("Sum: " + priceStats.getSum());
+        System.out.println("Min: " + priceStats.getMin());
+        System.out.println("Max: " + priceStats.getMax());
+        System.out.println("Average: " + priceStats.getAverage());
+        System.out.println("Manual Average: " + (priceStats.getSum() / priceStats.getCount()) );
+
+    }
+
+
+    static void parallelStreams() {
+
+        /**
+         * PARALLEL STREAMS
+         *      - multiple streams running in parallel
+         *      - multithreading with streams - no thread management
+         *      - much faster for larger workloads
+         * 
+         * 
+         *      - adds/removes/manages threads from ForkJoinPool 
+         *      - you DO still need to worry about thread safety. 
+         */
+
+        int largeNum = 500000000;
+
+        long t0 = System.currentTimeMillis();
+        // All the primitive classes have ways to make streams of them (IntStream, LongStream, CharStream, etc.)
+        long longSeq = LongStream.rangeClosed(1, largeNum)
+            .map(i -> i * i % 10000007)
+            .sum();
+        long t1 = System.currentTimeMillis();
+        System.out.println("Operation took " + (t1 - t0) + " milliseconds. SUM: " + longSeq);
+
+         // .parallel() - creates parallel streams - copmutation will be split across CPU cores
+        long t2 = System.currentTimeMillis();
+        long longSeq2 = LongStream.rangeClosed(1, largeNum)
+            .parallel()        
+            .map(i -> i * i % 10000007)
+            .sum();
+        long t3 = System.currentTimeMillis();
+        System.out.println("Parallel Operation took " + (t3 - t2) + " milliseconds. SUM: " + longSeq2);
+
+        // be careful mixing .parallel and .sequential - which ever happens LAST on the pipeline will control the pipeline
+        long t4 = System.currentTimeMillis();
+        long longSeq3 = LongStream.rangeClosed(1, largeNum)
+            .parallel()        
+            .map(i -> i * i % 10000007)
+            .sequential()
+            .sum();
+        long t5 = System.currentTimeMillis();
+        System.out.println("Parallel/Sequential Operation took " + (t5 - t4) + " milliseconds. SUM: " + longSeq3);
+
+        long t6 = System.currentTimeMillis();
+        long longSeq4 = LongStream.rangeClosed(1, largeNum)
+            .sequential()        
+            .map(i -> i * i % 10000007)
+            .parallel()
+            .sum();
+        long t7 = System.currentTimeMillis();
+        System.out.println("Sequential/Parallel Operation took " + (t7 - t6) + " milliseconds. SUM: " + longSeq4);
+
+        System.out.println("\n--- THREAD SAFETY ---");
+        List<String> productNames = new ArrayList<>();
+        PRODUCTS.parallelStream()
+            .map(Product::name)
+            .forEach(productNames::add);        // collection is not thread safe, some items may be missing
+        System.out.println("UNSAFE: " + productNames);
+
+        List<String> safeProductNames = PRODUCTS.parallelStream()
+            .map(Product::name)
+            .collect(Collectors.toList());      // Collectors.toList will be parallel stream safe
+        System.out.println("SAFE: " + safeProductNames);
+
+        // can also use a thread-safe collection to avoid issues
+        ArrayBlockingQueue<String> productNamesQueue = new ArrayBlockingQueue<>(15);
+        PRODUCTS.parallelStream()
+            .map(Product::name)
+            .forEach(product -> {
+                try {
+                    productNamesQueue.put(product);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });        
+        System.out.println("QUEUE: " + productNamesQueue);
+
+    }
 }
