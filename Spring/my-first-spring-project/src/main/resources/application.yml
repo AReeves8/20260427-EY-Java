@@ -1,0 +1,14 @@
+# You can configure your properties file as a YAML file also if you prefer
+# Make sure you use spaces at the beginning! Not tabs!
+
+spring:
+  application:
+    name: my-first-spring-project
+    version: 1.0.0
+  output:
+    ansi:
+      enabled: always
+
+# the default port for a Spring Boot app is 8080, but you can change to whatever you want within a valid port range
+server:
+  port: 8080
