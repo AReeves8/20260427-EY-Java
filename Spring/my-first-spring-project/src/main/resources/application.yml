@@ -8,6 +8,20 @@ spring:
   output:
     ansi:
       enabled: always
+  # this is the setup for our DataSource bean, connecting us automatically to the database
+  # it can be filled in with different values for different environments, which we'll see later
+  datasource:
+  # url: jdbc:postgresql://localhost:5432/chinook_auto_increment -- yours!
+    url: jdbc:mysql://localhost:3306/chinook_autoincrement # mine
+    username: root
+    password: root
+    # driver-class-name: org.postgresql.Driver -- this can be optionally added if you want to explicitly specify the driver
+  
+  # this allows us to dictate whether changes in our app code will alter the database schema
+  # valid values are: none, validate, update, create, create-drop
+  jpa:
+    hibernate:
+      ddl-auto: none
 
 # the default port for a Spring Boot app is 8080, but you can change to whatever you want within a valid port range
 server:
