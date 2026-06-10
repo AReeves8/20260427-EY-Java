@@ -3,7 +3,7 @@ package com.skillstorm.repositories;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.skillstorm.models.Artist;
+import com.skillstorm.models.Counselor;
 
 // this annotation designates this interface as a Spring Data JPA repository
 // it will be automatically detected and registered as a bean in the Spring context
@@ -12,7 +12,7 @@ import com.skillstorm.models.Artist;
 @Repository
 // we can extend various types of repositories to add more functionality
 // the typing for this repository is <EntityClass, PrimaryKeyType>
-public interface ArtistRepository extends CrudRepository<Artist, Integer> {
+public interface CounselorRepository extends CrudRepository<Counselor, Integer> {
 
     // unless we need custom methods, we don't have to add ANYTHING to this interface!
 

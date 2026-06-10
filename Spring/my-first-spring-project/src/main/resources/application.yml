@@ -11,8 +11,8 @@ spring:
   # this is the setup for our DataSource bean, connecting us automatically to the database
   # it can be filled in with different values for different environments, which we'll see later
   datasource:
-  # url: jdbc:postgresql://localhost:5432/chinook_auto_increment -- yours!
-    url: jdbc:mysql://localhost:3306/chinook_autoincrement # mine
+  # url: jdbc:postgresql://localhost:5432/school -- yours!
+    url: jdbc:mysql://localhost:3306/school # mine
     username: root
     password: root
     # driver-class-name: org.postgresql.Driver -- this can be optionally added if you want to explicitly specify the driver
