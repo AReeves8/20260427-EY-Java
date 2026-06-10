@@ -1,6 +1,10 @@
 package com.skillstorm.repositories;
 
+import org.springframework.data.jpa.repository.NativeQuery;
+import org.springframework.data.jpa.repository.Query;
+// import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.skillstorm.models.Counselor;
@@ -15,7 +19,18 @@ import com.skillstorm.models.Counselor;
 public interface CounselorRepository extends CrudRepository<Counselor, Integer> {
 
     // unless we need custom methods, we don't have to add ANYTHING to this interface!
-
     Iterable<Counselor> findByLastNameStartsWith(String lastNameStartsWith);
+
+    // this is a custom method with our own included specific query
+    // @NativeQuery(value = "SELECT * FROM counselor WHERE first_name = ?1")
+    // @Query(value = "SELECT * FROM counselor WHERE first_name = ?1", nativeQuery = true) // this is equivalent to the above
+    // Iterable<Counselor> findByFirstNameExactly(String firstName);
+
+    // the above works but is not best practices much of the time
+    // if we use native queries, we are stuck with the version of SQL we're using now
+    // with JPQL like below, we can swap databases without having to change these queries
+
+    @Query("SELECT c FROM Counselor c WHERE c.firstName = :firstName")
+    Iterable<Counselor> findByFirstNameExactly(@Param("firstName") String firstName);
 
 }

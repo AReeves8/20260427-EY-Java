@@ -46,11 +46,14 @@ public class CounselorService {
     // each method in our controller will call to a different method here
     // this one is for getting all Counselors
     // important to know what gets returned from each repo method, but we can use this class to alter what is returned
-    public ResponseEntity<Iterable<Counselor>> getAll(String lastNameStartsWith) {
-        if (lastNameStartsWith == null) {
+    public ResponseEntity<Iterable<Counselor>> getAll(String lastNameStartsWith, String firstNameExactly) {
+        if (lastNameStartsWith == null && firstNameExactly == null) {
             return ResponseEntity.ok(this.repo.findAll());
         }
-        return ResponseEntity.ok(this.repo.findByLastNameStartsWith(lastNameStartsWith));
+        if (lastNameStartsWith != null) {
+            return ResponseEntity.ok(this.repo.findByLastNameStartsWith(lastNameStartsWith));
+        }
+        return ResponseEntity.ok(this.repo.findByFirstNameExactly(firstNameExactly));
     }
 
     // create one

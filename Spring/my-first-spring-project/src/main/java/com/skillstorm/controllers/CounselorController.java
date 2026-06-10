@@ -34,8 +34,9 @@ public class CounselorController {
     // this method will be called when a GET request is made to /counselors
     @GetMapping // without specifying otherwise, this will use the same mapping as the overall controller
     // in this case, that's localhost:8080/counselors
-    public ResponseEntity<Iterable<Counselor>> getAll(@RequestParam(required = false) String sw) {
-        return service.getAll(sw);
+    public ResponseEntity<Iterable<Counselor>> getAll(@RequestParam(required = false) String sw, 
+                                                      @RequestParam(required = false) String fn) {
+        return service.getAll(sw, fn);
     }
 
     // REST conventions indicate POST requests should go to the root URL for that entity type, like this:

@@ -18,7 +18,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseURL}}/counselors?sw=a",
+							"raw": "{{baseURL}}/counselors",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -33,7 +33,13 @@
 								},
 								{
 									"key": "sw",
-									"value": "a"
+									"value": "a",
+									"disabled": true
+								},
+								{
+									"key": "fn",
+									"value": "venita",
+									"disabled": true
 								}
 							]
 						}
