@@ -46,8 +46,11 @@ public class CounselorService {
     // each method in our controller will call to a different method here
     // this one is for getting all Counselors
     // important to know what gets returned from each repo method, but we can use this class to alter what is returned
-    public Iterable<Counselor> getAll() {
-        return this.repo.findAll();
+    public ResponseEntity<Iterable<Counselor>> getAll(String lastNameStartsWith) {
+        if (lastNameStartsWith == null) {
+            return ResponseEntity.ok(this.repo.findAll());
+        }
+        return ResponseEntity.ok(this.repo.findByLastNameStartsWith(lastNameStartsWith));
     }
 
     // create one
@@ -67,6 +70,12 @@ public class CounselorService {
         }
         // here, we're using a pre-fab method to add a 404 status, then building with no (null) body
         return ResponseEntity.notFound().build();
+    }
+
+    // delete one
+    public ResponseEntity<Void> deleteOne(int id) {
+        this.repo.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

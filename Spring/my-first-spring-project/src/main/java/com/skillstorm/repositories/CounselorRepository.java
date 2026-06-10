@@ -16,4 +16,6 @@ public interface CounselorRepository extends CrudRepository<Counselor, Integer> 
 
     // unless we need custom methods, we don't have to add ANYTHING to this interface!
 
+    Iterable<Counselor> findByLastNameStartsWith(String lastNameStartsWith);
+
 }

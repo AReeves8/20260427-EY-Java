@@ -1,12 +1,14 @@
 package com.skillstorm.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.skillstorm.dtos.CounselorDto;
@@ -32,8 +34,8 @@ public class CounselorController {
     // this method will be called when a GET request is made to /counselors
     @GetMapping // without specifying otherwise, this will use the same mapping as the overall controller
     // in this case, that's localhost:8080/counselors
-    public Iterable<Counselor> getAll() {
-        return service.getAll();
+    public ResponseEntity<Iterable<Counselor>> getAll(@RequestParam(required = false) String sw) {
+        return service.getAll(sw);
     }
 
     // REST conventions indicate POST requests should go to the root URL for that entity type, like this:
@@ -48,6 +50,11 @@ public class CounselorController {
     // for PathVariable, if the names match, you don't need the parentheses below; including here for clarity
     public ResponseEntity<Counselor> updateOne(@PathVariable("id") int id, @RequestBody CounselorDto dto) {
         return service.updateOne(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOne(@PathVariable int id) {
+        return service.deleteOne(id);
     }
 
 }

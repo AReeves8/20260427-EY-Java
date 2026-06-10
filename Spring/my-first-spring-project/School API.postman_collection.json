@@ -18,12 +18,23 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseURL}}/counselors",
+							"raw": "{{baseURL}}/counselors?sw=a",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"counselors"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "sw",
+									"value": "a"
+								}
 							]
 						}
 					},
@@ -83,6 +94,27 @@
 							],
 							"path": [
 								"counselors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete One",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/counselors/0",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"counselors",
+								"0"
 							]
 						}
 					},
