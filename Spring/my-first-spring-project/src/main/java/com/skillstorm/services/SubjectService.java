@@ -24,13 +24,13 @@ public class SubjectService {
 
     // create one
     public ResponseEntity<Subject> createOne(SubjectDto dto) {
-        return ResponseEntity.status(201).body(this.repo.save(new Subject(0, dto.title())));
+        return ResponseEntity.status(201).body(this.repo.save(new Subject(0, dto.title(), dto.teacher())));
     }
 
     // update one
     public ResponseEntity<Subject> updateOne(int id, SubjectDto dto) {
         if (this.repo.existsById(id)) {
-            Subject updated = this.repo.save(new Subject(id, dto.title()));
+            Subject updated = this.repo.save(new Subject(id, dto.title(), dto.teacher()));
             return ResponseEntity.status(HttpStatus.OK).body(updated);
         }
         return ResponseEntity.notFound().build();

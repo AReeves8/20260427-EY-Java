@@ -1,10 +1,14 @@
 package com.skillstorm.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,17 +25,19 @@ public class Teacher {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "subject_id")
-    private int subjectId;
+    @OneToOne
+    @JoinColumn(name = "subject_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"teacher"})
+    private Subject subject;
 
     public Teacher() {
     }
 
-    public Teacher(int id, String firstName, String lastName, int subjectId) {
+    public Teacher(int id, String firstName, String lastName, Subject subject) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.subjectId = subjectId;
+        this.subject = subject;
     }
 
     public int getId() {
@@ -58,12 +64,12 @@ public class Teacher {
         this.lastName = lastName;
     }
 
-    public int getSubjectId() {
-        return subjectId;
+    public Subject getSubject() {
+        return subject;
     }
 
-    public void setSubjectId(int subjectId) {
-        this.subjectId = subjectId;
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 
 }

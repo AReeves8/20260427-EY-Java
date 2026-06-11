@@ -1,3 +1,5 @@
 package com.skillstorm.dtos;
 
-public record SubjectDto(String title) {}
+import com.skillstorm.models.Teacher;
+
+public record SubjectDto(String title, Teacher teacher) {}
