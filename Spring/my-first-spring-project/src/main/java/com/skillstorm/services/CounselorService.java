@@ -59,14 +59,14 @@ public class CounselorService {
     // create one
     // very shorthand syntax here, note that we're hardcoding in an id of 0 so as not to overwrite anything
     public ResponseEntity<Counselor> createOne(CounselorDto dto) {
-        return ResponseEntity.status(201).body(this.repo.save(new Counselor(0, dto.firstName(), dto.lastName())));
+        return ResponseEntity.status(201).body(this.repo.save(new Counselor(0, dto.firstName(), dto.lastName(), dto.students())));
     }
 
     // update one by ID
     public ResponseEntity<Counselor> updateOne(int id, CounselorDto dto) {
         // some things to be aware of -- we must check that the id exists, and we have to remember that save is used for both creating AND updating
         if (this.repo.existsById(id)) {
-            Counselor updated = this.repo.save(new Counselor(id, dto.firstName(), dto.lastName()));
+            Counselor updated = this.repo.save(new Counselor(id, dto.firstName(), dto.lastName(), dto.students()));
             // to control the response per different results, we can use ResponseEntity
             // here, we're adjusting the status and adding a body with the updated Counselor
             return ResponseEntity.status(HttpStatus.OK).body(updated);

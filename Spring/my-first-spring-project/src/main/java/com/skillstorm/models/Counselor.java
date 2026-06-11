@@ -1,10 +1,16 @@
 package com.skillstorm.models;
 
+import java.util.List;
+
+// import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 // an Entity IS NOT A BEAN!
@@ -27,13 +33,23 @@ public class Counselor {
     @Column(name = "last_name")
     private String lastName;
 
+    // this is the non-controlling side, so we just have to say which variable in the other class maps to these students
+    @OneToMany(mappedBy = "counselor")
+    // to avoid recursion, we can completely ignore this property when converting to JSON
+    // however, with this method, we can NEVER see the students that go with a counselor
+    // @JsonIgnore
+    // we can instead ignore specific properties of objects
+    @JsonIgnoreProperties(value = {"counselor", "id"})
+    private List<Student> students;
+
     public Counselor() {
     }
 
-    public Counselor(int id, String firstName, String lastName) {
+    public Counselor(int id, String firstName, String lastName, List<Student> students) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.students = students;
     }
 
     public int getId() {
@@ -58,6 +74,14 @@ public class Counselor {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 
 }
