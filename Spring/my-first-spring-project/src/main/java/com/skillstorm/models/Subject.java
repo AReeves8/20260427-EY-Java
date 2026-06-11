@@ -1,5 +1,7 @@
 package com.skillstorm.models;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -7,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -25,13 +28,18 @@ public class Subject {
     @JsonIgnoreProperties({"subject"})
     private Teacher teacher;
 
+    @ManyToMany(mappedBy = "subjects")
+    @JsonIgnoreProperties({"subjects"})
+    private List<Student> students;
+
     public Subject() {
     }
 
-    public Subject(int id, String title, Teacher teacher) {
+    public Subject(int id, String title, Teacher teacher, List<Student> students) {
         this.id = id;
         this.title = title;
         this.teacher = teacher;
+        this.students = students;
     }
 
     public int getId() {
@@ -56,6 +64,14 @@ public class Subject {
 
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 
 }

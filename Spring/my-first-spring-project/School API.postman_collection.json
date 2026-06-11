@@ -1,162 +1,323 @@
 {
-	"info": {
-		"_postman_id": "aff295ef-a737-45a9-a8d7-25790c86ab4c",
-		"name": "School API",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "24892588"
-	},
-	"item": [
-		{
-			"name": "Counselor",
-			"item": [
-				{
-					"name": "Find All",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseURL}}/counselors",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"counselors"
-							],
-							"query": [
-								{
-									"key": "",
-									"value": "",
-									"disabled": true
-								},
-								{
-									"key": "sw",
-									"value": "a",
-									"disabled": true
-								},
-								{
-									"key": "fn",
-									"value": "venita",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update One",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"Hardy\",\r\n    \"lastName\": \"De Vries\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseURL}}/counselors/1",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"counselors",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create One",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"Tester\",\r\n    \"lastName\": \"McGee\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseURL}}/counselors",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"counselors"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete One",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{baseURL}}/counselors/0",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"counselors",
-								"0"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"packages": {},
-				"requests": {},
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"packages": {},
-				"requests": {},
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "baseURL",
-			"value": ""
-		}
-	]
+  "info": {
+    "_postman_id": "aff295ef-a737-45a9-a8d7-25790c86ab4c",
+    "name": "School API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "24892588"
+  },
+  "item": [
+    {
+      "name": "Counselor",
+      "item": [
+        {
+          "name": "Find All",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/counselors",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "counselors"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "sw",
+                  "value": "a",
+                  "disabled": true
+                },
+                {
+                  "key": "fn",
+                  "value": "venita",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update One",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstName\": \"Hardy\",\r\n    \"lastName\": \"De Vries\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/counselors/1",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "counselors",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create One",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstName\": \"Tester\",\r\n    \"lastName\": \"McGee\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/counselors",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "counselors"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete One",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/counselors/0",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "counselors",
+                "0"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Student",
+      "item": [
+        {
+          "name": "Find All",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/students",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "students"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create One",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstName\": \"Tester\",\r\n    \"lastName\": \"McGee\",\r\n    \"counselor\": {\r\n        \"id\": 1\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/students",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "students"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update One",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstName\": \"Lorens\",\r\n    \"lastName\": \"Thebe\",\r\n    \"counselor\": {\r\n        \"id\": 3\r\n    },\r\n    \"subjects\": [\r\n        {\r\n            \"id\": 4\r\n        },\r\n        {\r\n            \"id\": 5\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/students/1",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "students",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete One",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstName\": \"Lorens\",\r\n    \"lastName\": \"Thebe\",\r\n    \"counselorId\": 3\r\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/students/0",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "students",
+                "0"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Subject",
+      "item": [
+        {
+          "name": "Find All",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/subjects",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "subjects"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Teacher",
+      "item": [
+        {
+          "name": "Find All",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/teachers",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "teachers"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseURL",
+      "value": ""
+    }
+  ]
 }

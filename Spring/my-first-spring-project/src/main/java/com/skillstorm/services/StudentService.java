@@ -24,13 +24,13 @@ public class StudentService {
 
     // create one
     public ResponseEntity<Student> createOne(StudentDto dto) {
-        return ResponseEntity.status(201).body(this.repo.save(new Student(0, dto.firstName(), dto.lastName(), dto.counselor())));
+        return ResponseEntity.status(201).body(this.repo.save(new Student(0, dto.firstName(), dto.lastName(), dto.counselor(), dto.subjects())));
     }
 
     // update one
     public ResponseEntity<Student> updateOne(int id, StudentDto dto) {
         if (this.repo.existsById(id)) {
-            Student updated = this.repo.save(new Student(id, dto.firstName(), dto.lastName(), dto.counselor()));
+            Student updated = this.repo.save(new Student(id, dto.firstName(), dto.lastName(), dto.counselor(), dto.subjects()));
             return ResponseEntity.status(HttpStatus.OK).body(updated);
         }
         return ResponseEntity.notFound().build();

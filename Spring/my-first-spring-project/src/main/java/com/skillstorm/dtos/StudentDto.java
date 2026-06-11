@@ -1,5 +1,8 @@
 package com.skillstorm.dtos;
 
-import com.skillstorm.models.Counselor;
+import java.util.List;
 
-public record StudentDto(String firstName, String lastName, Counselor counselor) {}
+import com.skillstorm.models.Counselor;
+import com.skillstorm.models.Subject;
+
+public record StudentDto(String firstName, String lastName, Counselor counselor, List<Subject> subjects) {}

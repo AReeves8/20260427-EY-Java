@@ -1,5 +1,7 @@
 package com.skillstorm.models;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -8,6 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -37,14 +41,26 @@ public class Student {
     @JoinColumn(name = "counselor_id", referencedColumnName = "id")
     private Counselor counselor;
 
+    @ManyToMany
+    // for many to many, we can choose either side to be the controlling side, but we need some data
+    // the JoinTable annotation lays out that data
+    @JoinTable(
+        name = "enrollment",                                    // the name of the join/junction table
+        joinColumns = @JoinColumn(name = "student_id"),         // the column(s) in the join table pointing to THIS table
+        inverseJoinColumns = @JoinColumn(name = "subject_id")   // the column(s) in the join table pointing to the OTHER table
+    )
+    @JsonIgnoreProperties(value = {"students"})
+    private List<Subject> subjects;
+
     public Student() {
     }
 
-    public Student(int id, String firstName, String lastName, Counselor counselor) {
+    public Student(int id, String firstName, String lastName, Counselor counselor, List<Subject> subjects) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.counselor = counselor;
+        this.subjects = subjects;
     }
 
     public int getId() {
@@ -77,6 +93,14 @@ public class Student {
 
     public void setCounselor(Counselor counselor) {
         this.counselor = counselor;
+    }
+
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
     }
 
 }

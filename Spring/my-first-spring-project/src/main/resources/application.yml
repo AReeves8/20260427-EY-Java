@@ -12,9 +12,9 @@ spring:
   # it can be filled in with different values for different environments, which we'll see later
   datasource:
   # url: jdbc:postgresql://localhost:5432/school -- yours!
-    url: jdbc:mysql://localhost:3306/school # mine
-    username: root
-    password: root
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     # driver-class-name: org.postgresql.Driver -- this can be optionally added if you want to explicitly specify the driver
   
   # this allows us to dictate whether changes in our app code will alter the database schema
@@ -22,6 +22,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+  config:
+    import: optional:file:.env[.properties]
+    # this allows us to use the .env imports we're using for url, username and password above
+    # we no longer post actual values to our repo, just the slugs, and it fills in from the .env file
 
 # the default port for a Spring Boot app is 8080, but you can change to whatever you want within a valid port range
 server:
