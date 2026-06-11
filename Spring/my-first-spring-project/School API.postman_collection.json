@@ -261,6 +261,86 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Create One",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"Math\",\r\n    \"teacher\": {\r\n        \"id\": 1\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/subjects",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "subjects"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update One",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"Math\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/subjects/1",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "subjects",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete One",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/subjects/0",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "subjects",
+                "0"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -282,6 +362,86 @@
               ],
               "path": [
                 "teachers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create One",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstName\": \"Joel\",\r\n    \"lastName\": \"Bernardotte\",\r\n    \"subject\": {\r\n        \"id\": 1\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/teachers",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "teachers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete One",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/teachers/0",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "teachers",
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update One",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstName\": \"Joel\",\r\n    \"lastName\": \"Bernardotte\",\r\n    \"subject\": {\r\n        \"id\": 1\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/teachers/1",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "teachers",
+                "1"
               ]
             }
           },

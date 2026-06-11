@@ -30,3 +30,12 @@ spring:
 # the default port for a Spring Boot app is 8080, but you can change to whatever you want within a valid port range
 server:
   port: 8080
+
+# customizing the logging level
+# root will set the level for the OVERALL application
+# you can then choose specific packages and/or classes to dial in
+logging:
+  level:
+    root: INFO
+    '[com.skillstorm.controllers]': DEBUG
+    # '[com.skillstorm.controllers.SubjectController]': ERROR   # more specific mappings override less specific ones
