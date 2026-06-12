@@ -1,0 +1,4 @@
+# this configuration file will be active ONLY when we're using the dev profile
+# all we have to do is name the file in this way -- application-<name of profile>
+duplicate:
+    key: DEV Profile Active!

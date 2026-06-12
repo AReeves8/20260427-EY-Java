@@ -26,6 +26,9 @@ spring:
     import: optional:file:.env[.properties]
     # this allows us to use the .env imports we're using for url, username and password above
     # we no longer post actual values to our repo, just the slugs, and it fills in from the .env file
+  profiles:
+    # active: prod   # you can set the active profile here or via command line, active will override default
+    default: dev
 
 # the default port for a Spring Boot app is 8080, but you can change to whatever you want within a valid port range
 server:
