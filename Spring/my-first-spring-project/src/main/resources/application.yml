@@ -39,3 +39,14 @@ logging:
     root: INFO
     '[com.skillstorm.controllers]': DEBUG
     # '[com.skillstorm.controllers.SubjectController]': ERROR   # more specific mappings override less specific ones
+
+# setup for actuator
+management:
+  endpoints:
+    web:
+      # base-path: /mgmt # can change root path, defaults to /actuator
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

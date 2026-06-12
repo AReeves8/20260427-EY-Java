@@ -14,6 +14,8 @@ import com.skillstorm.dtos.TeacherDto;
 import com.skillstorm.models.Teacher;
 import com.skillstorm.services.TeacherService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/teachers")
 public class TeacherController {
@@ -46,6 +48,12 @@ public class TeacherController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOne(@PathVariable int id) {
         return service.deleteOne(id);
+    }
+
+    // a method for checking if our validation is working!
+    @PostMapping("/validation")
+    public ResponseEntity<String> checkValidation(@RequestBody @Valid Teacher teacher) {
+        return ResponseEntity.ok("VALID!!");
     }
 
 }

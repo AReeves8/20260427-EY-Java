@@ -1,5 +1,7 @@
 package com.skillstorm.models;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -10,6 +12,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "teacher")
@@ -19,9 +24,19 @@ public class Teacher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    // adding validations for properties
+    // when the user sends in an object to the controller, these will kick in and check if it meets the requirements
+    // the object MUST be tagged in the controller with the @Valid annotation
+    // when we get the error back, we can see exactly which properties violated which constraints
+    @NotNull
+    @NotEmpty
+    @Length(min = 3, max = 32)
     @Column(name = "first_name")
     private String firstName;
 
+    @NotNull
+    @NotEmpty
+    @Length(min = 3, max = 32)
     @Column(name = "last_name")
     private String lastName;
 
