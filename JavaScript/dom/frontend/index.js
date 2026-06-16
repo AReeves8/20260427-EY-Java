@@ -64,6 +64,74 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+// HANDLE NEW MOVIES BEING CREATED WITH THE FORM
+document.getElementById("new-movie-form").addEventListener("submit", (eventInfo) => {
+
+    // prevents any default actions from occuring - tells the DOM that this event is explicitly handled
+    eventInfo.preventDefault();
+
+    /**
+     * FormData
+     *      - makes it WAY easier to grab data out of forms
+     *      - automatically map data inside of input fields to a JS object
+     *      - easily retrieve values from the form using .get() with the name of the input field
+     * 
+     *      - otherwise, you'd have to do document.getElementById("some-id").value() on EACH input field
+     */
+    let inputData = new FormData(document.getElementById("new-movie-form"));
+
+    // IMPORTANT: make sure your object property names match to what your backend is expecting
+    const newMovie = {
+        title: inputData.get("new-movie-title"),    
+        rating: inputData.get("new-movie-rating"),
+        genre: inputData.get("new-movie-genre"),
+        director: {
+            firstName: inputData.get("new-director-firstname"),
+            lastName: inputData.get("new-director-lastname")
+        }
+    }
+    
+    /**
+     * FETCH
+     *      - easier way to send HTTP requests
+     *      - built on AJAX
+     *      - return a Promise
+     *          - async/await
+     *          - .then()
+     */
+    fetch(BACKEND_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify(newMovie)      // JSON stringify: js object -> json string
+    })
+    .then((httpResponse) => {
+        // .then() runs for ALL status codes in the 200s
+
+        if(httpResponse.status === 201) {
+
+            // .json() returns ANOTHER promise that needs to be handled
+            return httpResponse.json();
+        }
+        return null;
+    })
+    .then((movie) => {
+        console.log(movie);
+        addMovieToTable(movie);
+    })
+    .catch((error) => {
+        // .catch() runs for ALL status codes in the 400s and 500s
+
+        // show an error message to the user, with a toast or alert
+
+        // BE VERY CAREFUL ABOUT SHOWING ERROR MESSAGES TO USERS
+        console.error("ERROR OCCURED: " + error);
+    })
+
+
+});
+
 
 ///// HELPER FUNCTIONS /////
 
