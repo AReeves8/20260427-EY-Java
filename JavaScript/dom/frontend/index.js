@@ -1,6 +1,6 @@
 const BACKEND_URL = "http://localhost:8080/api/v1/movies";
 const allMovies = [];
-
+let selectedMovie;
 
 
 /**
@@ -128,8 +128,79 @@ document.getElementById("new-movie-form").addEventListener("submit", (eventInfo)
         // BE VERY CAREFUL ABOUT SHOWING ERROR MESSAGES TO USERS
         console.error("ERROR OCCURED: " + error);
     })
+});
+
+document.getElementById("update-movie-form").addEventListener("submit", (eventInfo) => {
+
+    // prevents any default actions from occuring - tells the DOM that this event is explicitly handled
+    eventInfo.preventDefault();
+
+    // grabbing data from the form
+    let inputData = new FormData(document.getElementById("update-movie-form"));
+
+    // IMPORTANT: make sure your object property names match to what your backend is expecting
+    const newMovie = {
+        id: selectedMovie.id,
+        title: inputData.get("update-movie-title"),    
+        rating: inputData.get("update-movie-rating"),
+        genre: inputData.get("update-movie-genre"),
+        director: {
+            firstName: inputData.get("update-director-firstName"),
+            lastName: inputData.get("update-director-lastName")
+        }
+    }
+    
+    // sending PUT request
+    fetch(BACKEND_URL + `/${selectedMovie.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify(newMovie)      // JSON stringify: js object -> json string
+    })
+    .then((httpResponse) => {
+
+        if(httpResponse.status === 200) {
+            return httpResponse.json();
+        }
+        return null;
+    })
+    .then((movie) => {
+        editMovieInTable(movie);
+        resetForms();
+    })
+    .catch((error) => {
+        // show an error message to the user, with a toast or alert
+        // BE VERY CAREFUL ABOUT SHOWING ERROR MESSAGES TO USERS
+        console.error("ERROR OCCURED: " + error);
+    })
 
 
+});
+
+document.getElementById("delete-movie-form").addEventListener("submit", (eventInfo) => {
+
+    // prevents any default actions from occuring - tells the DOM that this event is explicitly handled
+    eventInfo.preventDefault();
+    
+    // sending DELETE request
+    fetch(BACKEND_URL + `/${selectedMovie.id}`, { method: "DELETE" })
+    .then((httpResponse) => {
+
+        if(httpResponse.status === 204) {
+            // remove the movie from the table
+            removeMovieFromTable(selectedMovie.id);
+        }
+    })
+    .catch((error) => {
+        // show an error message to the user, with a toast or alert
+        // BE VERY CAREFUL ABOUT SHOWING ERROR MESSAGES TO USERS
+        console.error("ERROR OCCURED: " + error);
+    })
+    .finally(() => {
+        // finally runs every time, regardless of if an error was thrown or not
+        resetForms();
+    })
 });
 
 
@@ -156,8 +227,12 @@ const addMovieToTable = (newMovie) => {
     ratingTD.innerText = newMovie.rating;
     directorTD.innerText = newMovie.director.firstName + " " + newMovie.director.lastName;
 
-    editBtnTD.innerHTML = `<button class="btn btn-primary p-1" id="EDIT-${newMovie.id}">Edit</button>`;
-    delBtnTD.innerHTML = `<button class="btn btn-danger p-1" id="DEL-${newMovie.id}">Delete</button>`;
+    /**
+     * HTML event listeners - on*
+     *      - can trigger JS code just like other event listeners
+     */
+    editBtnTD.innerHTML = `<button class="btn btn-primary p-1" onclick="activateEditForm(${newMovie.id})" id="EDIT-${newMovie.id}">Edit</button>`;
+    delBtnTD.innerHTML = `<button class="btn btn-danger p-1" onclick="activateDeleteForm(${newMovie.id})" id="DEL-${newMovie.id}">Delete</button>`;
 
     // put all the TDs into the TR
     tr.appendChild(titleTD);
@@ -176,4 +251,79 @@ const addMovieToTable = (newMovie) => {
 
     // adding newMovie to global movies list
     allMovies.push(newMovie);
+}
+
+const editMovieInTable = (movie) => {
+
+    // can manually set the HTML inside of an element
+    document.getElementById(`TR-${movie.id}`).innerHTML = `
+    <td>${movie.title}</td>
+    <td>${movie.genre}</td>
+    <td>${movie.rating}</td>
+    <td>${movie.director.firstName + " " + movie.director.lastName}</td>
+    <td><button class="btn btn-primary p-1" onclick="activateEditForm(${movie.id})" id="EDIT-${movie.id}">Edit</button></td>
+    <td><button class="btn btn-danger p-1" onclick="activateDeleteForm(${movie.id})" id="DEL-${movie.id}">Delete</button></td>
+    `;
+}
+
+const removeMovieFromTable = (movieId) => {
+    document.getElementById(`TR-${movieId}`).remove();
+}
+
+const activateEditForm = (movieId) => {
+    // could send a GET request to an endpoint to find the movie that was selected
+    // that would be better for apps with lots of records
+
+    // finding the move that was selected
+    for(let movie of allMovies) {
+        if(movie.id === movieId) {
+            selectedMovie = movie;
+            break;
+        }
+    }
+
+    console.log(selectedMovie);
+
+    // pre-populating the edit form
+    document.getElementById("update-movie-title").value = selectedMovie.title;
+    document.getElementById("update-movie-genre").value = selectedMovie.genre;
+    document.getElementById("update-movie-rating").value = selectedMovie.rating;
+    document.getElementById("update-director-firstName").value = selectedMovie.director.firstName;
+    document.getElementById("update-director-lastName").value = selectedMovie.director.lastName;
+
+    // make sure the edit form is the only form being displayed
+    document.getElementById("update-movie-form").style.display = "block";
+    document.getElementById("new-movie-form").style.display = "none";
+    document.getElementById("delete-movie-form").style.display = "none";
+}
+
+const activateDeleteForm = (movieId) => {
+    // finding the move that was selected
+    for(let movie of allMovies) {
+        if(movie.id === movieId) {
+            selectedMovie = movie;
+            break;
+        }
+    }
+
+    // pre-populating the delete form
+    document.getElementById("delete-movie-title").value = selectedMovie.title;
+    document.getElementById("delete-movie-genre").value = selectedMovie.genre;
+    document.getElementById("delete-movie-rating").value = selectedMovie.rating;
+    document.getElementById("delete-director-firstName").value = selectedMovie.director.firstName;
+    document.getElementById("delete-director-lastName").value = selectedMovie.director.lastName;
+
+    // make sure the delete form is the only form being displayed
+    document.getElementById("delete-movie-form").style.display = "block";
+    document.getElementById("update-movie-form").style.display = "none";
+    document.getElementById("new-movie-form").style.display = "none";
+    
+}
+
+const resetForms = () => {
+
+    // resetting all forms to default state
+    document.getElementById("new-movie-form").style.display = "block";
+    document.getElementById("update-movie-form").style.display = "none";
+    document.getElementById("delete-movie-form").style.display = "none";
 }
