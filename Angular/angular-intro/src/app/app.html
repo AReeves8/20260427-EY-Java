@@ -1,0 +1,87 @@
+<main class="main">
+  
+  <!--
+    INTERPOLATION - {{ propertyName }}
+      - angular binding data to the DOM
+      - one-way binding (TS -> HTML)
+        - only way to change the value in the property is to change the TS
+
+    PROPERTY BINDING - [ attributeName ]
+      - bind data to HTML tag attributes
+      - good for setting attributes dynamically
+  -->
+  <h1 [class.highlight]="isHighlighted" >{{message}}</h1>
+
+
+  <!--
+    EVENT BINDING - ( eventName )
+      - bind functions to DOM events
+      - create event listeners
+      - use just the name of the event without "on"
+  -->
+  <button (click)="increment()" class="bg-rose-600 p-3 rounded-md">Click Me!</button>
+  <p>Current Count: {{count}}</p>
+
+
+  <!--
+    [(NGMODEL)]
+      - two-way data binding
+        - HTML <-> TS
+      - comes from @angular/forms
+        - make sure to add FormsModule to @Component decorator in TS
+
+  -->
+  <div>
+    <input [(ngModel)]="searchText" />
+    <p>You searched for: {{searchText}}</p>
+  </div>
+
+</main>
+
+
+<!-- 
+  ANGULAR DIRECTIVES
+    - ways to dynamically render HTML
+    - add logic to your HTML page
+      - ngFor - loop through some list and render the given HTML for each iteration
+      - ngIf - conditionally render HTML based on some boolean
+      - [( directiveName )] syntax
+
+    - were used in Angular v17 and before - officially deprecated in v20
+      - since been replaced with BLOCKS
+
+  BLOCKS
+    - @for() {} @empty {}
+      - renders HTML for each iteration of a list. empty renders some content if the given list is empty
+    - @if() {} @else if {} @else {}
+      - conditionally render HTML based on various boolean conditions
+-->
+<div>
+  @for (movie of allMovies; track movie.id; let i = $index) {
+    <div>
+      @if(i == 0) {
+        <p>------------------------------------------------------</p>
+      }
+      <ul>
+        <li>Movie {{i+1}}: {{movie.id}}</li>
+        <li>Movie {{i+1}}: {{movie.title}}</li>
+        <li>Movie {{i+1}}: {{movie.rating}}</li>
+        <li>Movie {{i+1}}: {{movie.genre}}</li>
+        <li>Movie {{i+1}}: {{movie.director.firstName + " " + movie.director.lastName}}</li>
+      </ul>
+      <p>------------------------------------------------------</p>
+    </div>
+  }
+  @empty {
+    <p>No movies to display.</p>
+  }
+</div>
+
+
+
+<!-- 
+  Router Outlet
+    - angular router looks at your browser URL and then renders different content based on that
+    - the content will be rendered here where router-outlet is defined
+-->
+<router-outlet />
