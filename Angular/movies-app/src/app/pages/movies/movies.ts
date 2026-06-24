@@ -1,10 +1,15 @@
 import { Component, signal } from '@angular/core';
 import { Movie } from '../../types/Movie';
 import { MovieService } from '../../services/MovieService';
+import { DataViewModule } from 'primeng/dataview';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { TagModule } from 'primeng/tag';
+import { FormsModule } from '@angular/forms';
+import { ButtonModule } from "primeng/button";
 
 @Component({
   selector: 'app-movies',
-  imports: [],
+  imports: [DataViewModule, SelectButtonModule, TagModule, FormsModule, ButtonModule],
   templateUrl: './movies.html',
   styleUrl: './movies.css',
 })
