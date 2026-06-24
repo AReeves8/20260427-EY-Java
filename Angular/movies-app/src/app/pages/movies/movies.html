@@ -1,0 +1,20 @@
+<div>
+  @for (movie of allMovies(); track movie.id; let i = $index) {
+    <div>
+      @if(i == 0) {
+        <p>------------------------------------------------------</p>
+      }
+      <ul>
+        <li>Movie {{i+1}}: {{movie.id}}</li>
+        <li>Movie {{i+1}}: {{movie.title}}</li>
+        <li>Movie {{i+1}}: {{movie.rating}}</li>
+        <li>Movie {{i+1}}: {{movie.genre}}</li>
+        <li>Movie {{i+1}}: {{movie.director.firstName + " " + movie.director.lastName}}</li>
+      </ul>
+      <p>------------------------------------------------------</p>
+    </div>
+  }
+  @empty {
+    <p>No movies to display.</p>
+  }
+</div>
