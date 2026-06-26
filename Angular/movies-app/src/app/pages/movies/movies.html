@@ -14,7 +14,7 @@
                     <p class="text-5xl">All Movies</p>
                 </div>
                 <div class="pr-5">
-                    <p-button label="New Movie" />
+                    <p-button (onClick)="handleCreateMovie()" label="New Movie" />
                 </div>
             </div>
         </ng-template>
@@ -37,8 +37,22 @@
                             </div>
                             <div class="flex flex-col gap-6 mt-6">
                                 <div class="flex justify-between gap-2">
-                                    <button pButton icon="pi pi-pen-to-square" class="flex-auto whitespace-nowrap"></button>
-                                    <button pButton icon="pi pi-trash" outlined class="flex-auto whitespace-nowrap"></button>
+                                    <!-- Update Button -->
+                                    <button 
+                                        pButton 
+                                        icon="pi pi-pen-to-square" 
+                                        class="flex-auto whitespace-nowrap" 
+                                        (click)="handleUpdateMovie(movie)"
+                                    ></button>
+
+                                    <!-- Delete Button -->
+                                    <button 
+                                        pButton 
+                                        icon="pi pi-trash" 
+                                        outlined 
+                                        class="flex-auto whitespace-nowrap"
+                                        (click)="handleDeleteMovie(movie)"
+                                    ></button>
                                 </div>
                             </div>
                         </div>
@@ -51,3 +65,86 @@
         </ng-template>
     </p-dataview>
 </div>
+
+
+<p-dialog
+    [header]="dialogTitle()"
+    [modal]="true"
+    [visible]="showDialog()"
+    [style]="{width: '40rem', height: '40rem'}"
+>
+    <form
+        [formGroup]="form"
+        (ngSubmit)="saveMovie()"
+    >
+
+        <div class="flex flex-row">
+            <!-- TITLE -->
+            <p-ifta-label class="w-full p-2">
+                <input pInputText id="movie-title", type="text", formControlName="title" class="w-full"/>
+                <label for="movie-title" >Title</label>
+            </p-ifta-label>
+            
+            <!-- Director -->
+            <p-ifta-label class="w-full p-2">
+                <p-select 
+                    id="movie-director"
+                    formControlName="director"
+                    [options]="allDirectors()"
+                    class="w-full"
+                >
+                    <!-- Tell PrimeNG how I want each item to look in the dropdown menu -->
+                    <ng-template #item let-director>{{director.firstName}} {{director.lastName}}</ng-template>
+                    <ng-template #selectedItem let-director>{{director.firstName}} {{director.lastName}}</ng-template>
+                </p-select>
+                <label for="movie-director">Director</label>
+            </p-ifta-label>
+        </div>
+        
+        <div class="flex flex-row">
+            <!-- Rating -->
+            <p-ifta-label class="w-full p-2">
+                <p-input-number id="movie-rating", type="number", formControlName="rating" class="w-full"/>
+                <label for="movie-rating">Rating (1-10)</label>
+            </p-ifta-label>
+
+            <!-- Genre -->
+            <p-ifta-label class="w-full p-2">
+                <p-select 
+                    id="movie-genre"
+                    formControlName="genre"
+                    [options]="genreOptions"
+                    class="w-full"
+                />
+                <label for="movie-genre">Genre</label>
+            </p-ifta-label>
+        </div>
+        
+        <!-- Cancel Button -->
+        <p-button 
+            label="Cancel" 
+            type="button" 
+            severity="secondary" 
+            [outlined]="true"  
+            (onClick)="showDialog.set(false)"
+            class="p-2 w-full"
+        />
+
+        <!-- Submit Button - will be disabled if the FormGroup validators are not correct -->
+        <p-button 
+            label="Save" 
+            type="submit"   
+            [disabled]="form.invalid"   
+            class="p-2 w-full"
+        />
+
+    </form>
+</p-dialog>
+
+
+<app-delete-confirmation-modal 
+    [visible]="showDeleteDialog()"
+    [recordName]="selectedMovie()?.title ?? ''"
+    (confirmed)="deleteMovie()"
+    (cancelled)="showDeleteDialog.set(false)"
+/>

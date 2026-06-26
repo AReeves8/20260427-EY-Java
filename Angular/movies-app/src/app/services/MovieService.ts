@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Movie } from "../types/Movie";
 import { catchError, Observable, throwError } from "rxjs";
+import { environment } from "../../environments/environments";
 
 
 /**
@@ -26,7 +27,7 @@ export class MovieService {
      *          - one central location for all your related requests
      */
 
-    private readonly URL = "http://localhost:8080/api/v1/movies"
+    private readonly URL = `${environment.baseApiUrl}/movies`;
 
 
     // constructor injection - getting an instance of HttpClient from DI container
@@ -71,5 +72,51 @@ export class MovieService {
             );
     }
 
+    getMovieById(id: number): Observable<Movie> {
+        return this.http.get<Movie>(this.URL + `/${id}`)
+            .pipe(
+                catchError(
+                    () => throwError(
+                        () => new Error("Failed to load Movie.")
+                    )
+                )
+            );
+    }
+
+    // POST request for new movies
+    createMovie(movie: Movie): Observable<Movie> {
+        return this.http.post<Movie>(this.URL, movie)
+            .pipe(
+                catchError(
+                    () => throwError(
+                        () => new Error("Failed to create Movie.")
+                    )
+                )
+            );
+    }
+
+    // PUT request for movies
+    updateMovie(id: number, movie: Movie): Observable<Movie> {
+        return this.http.put<Movie>(this.URL + `/${id}`, movie)
+            .pipe(
+                catchError(
+                    () => throwError(
+                        () => new Error("Failed to update Movie.")
+                    )
+                )
+            );
+    }
+
+    // DELETE request for movies
+    deleteMovie(id: number): Observable<void> {
+        return this.http.delete<void>(this.URL + `/${id}`)
+            .pipe(
+                catchError(
+                    () => throwError(
+                        () => new Error("Failed to delete Movie.")
+                    )
+                )
+            );
+    }
 
 }

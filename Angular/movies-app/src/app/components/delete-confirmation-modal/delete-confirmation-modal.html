@@ -1,0 +1,28 @@
+<p-dialog
+    header="Confirm Delete"
+    [modal]="true"
+    [visible]="visible()"
+>
+    <p>
+        Are you sure you want to delete <strong>{{ recordName() }}</strong>? This action cannot be undone.
+    </p>
+
+    <ng-template #footer>
+
+        <!-- fire off events when buttons are clicked -->
+        <p-button 
+            label="Cancel"
+            severity="secondary"
+            [outlined]="true"
+            (onClick)="cancelled.emit()"
+        />
+
+        <p-button 
+            label="Delete"
+            severity="danger"
+            [outlined]="true"
+            (onClick)="confirmed.emit()"
+        />
+
+    </ng-template>
+</p-dialog>

@@ -1,6 +1,14 @@
 
 
-<app-movies></app-movies>
+<p-menubar 
+    [model]="navItems"    
+>
+    <ng-template #end>{{title()}}</ng-template>
+</p-menubar>
 
-
+<!-- 
+    Based on whatever path your URL is currently at in the browser, 
+    Angular Router will input the corresponding component at router-outlet 
+    in your app
+-->
 <router-outlet />
