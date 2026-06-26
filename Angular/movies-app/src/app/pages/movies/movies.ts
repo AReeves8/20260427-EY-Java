@@ -15,12 +15,15 @@ import { Genre } from '../../types/Genre';
 import { Director } from '../../types/Director';
 import { DirectorService } from '../../services/DirectorService';
 import { DeleteConfirmationModal } from "../../components/delete-confirmation-modal/delete-confirmation-modal";
+import { DirectorNamePipe } from '../../../pipes/director-name-pipe';
+import { RatingStarsPipe } from '../../../pipes/rating-stars-pipe';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-movies',
   imports: [DataViewModule, SelectButtonModule, TagModule, FormsModule, ButtonModule,
     DialogModule, InputTextModule, SelectModule, ReactiveFormsModule, InputNumberModule,
-    IftaLabelModule, DeleteConfirmationModal],
+    IftaLabelModule, DeleteConfirmationModal, DirectorNamePipe, RatingStarsPipe, CardModule],
   templateUrl: './movies.html',
   styleUrl: './movies.css',
 })
