@@ -1,0 +1,15 @@
+spring:
+    output:
+        ansi:  
+            enabled: always
+    
+    # Elastic Beanstalk auto-injects RDS env vars that you can reference here
+    datasource:
+        url: jdbc:postgresql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}
+        username: ${RDS_USERNAME}                        
+        password: ${RDS_PASSWORD}                         
+        driver-class-name: org.postgresql.Driver    
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect    
+        hibernate:
+            ddl-auto: update 

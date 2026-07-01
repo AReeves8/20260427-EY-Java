@@ -12,8 +12,9 @@ insert into DIRECTORS (first_name, last_name) values ('Isa', 'Phibb');
 insert into DIRECTORS (first_name, last_name) values ('Karalynn', 'Caw');
 insert into DIRECTORS (first_name, last_name) values ('Codie', 'Sally');
 insert into DIRECTORS (first_name, last_name) values ('Rozamond', 'Rumbellow');
+insert into DIRECTORS (first_name, last_name) values ('Christopher', 'Nolan');
 
-insert into MOVIES (movie_title, rating, genre, director_id) values ('Friend Zone (Pagafantas)', 2, 'ROMANCE', 2);
+insert into MOVIES (movie_title, rating, genre, director_id) values ('Inception', 8, 'SCIENCE_FICTION', 6);
 insert into MOVIES (movie_title, rating, genre, director_id) values ('Kismet', 5, 'DRAMA', 1);
 insert into MOVIES (movie_title, rating, genre, director_id) values ('Casanova', 6, 'ROMANCE', 2);
 insert into MOVIES (movie_title, rating, genre, director_id) values ('Extreme Ops', 2, 'ACTION', 1);

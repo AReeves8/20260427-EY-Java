@@ -18,7 +18,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/api/v1/directors")
-@CrossOrigin({"http://127.0.0.1:5500", "http://localhost:4200"})       
+@CrossOrigin({
+    "https://d1s6x4sf3u5pf5.cloudfront.net",    // backend CloudFront domain 
+    "https://d1hp3vvy5gkcob.cloudfront.net",    // frontend CloudFront domain
+    "http://127.0.0.1:5500", 
+    "http://localhost:4200"})       
 public class DirectorController {
 
     private final DirectorService service;
